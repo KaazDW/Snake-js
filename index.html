@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>SNAKEE.</title>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  
+  <script src="app.js" charset="utf-8"></script>
+  <link rel="stylesheet" href="style.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="tooltiper/tooltiper.css">
+  <script src="tooltiper/tooltiper.js" charset="utf-8"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
+</head>
+
+<body>
+  <section class="top element">
+    <div class="title">
+      <h1>SNAKE.</h1>
+      <div>
+        <button class='start-stop tooltip-container' data-tooltip="Start and stop the game"><i class="bi bi-play-circle-fill"></i></button>
+        <a href="https://github.com/KaazDW/" class="tooltip-container" data-tooltip="Github public soon..." target="_blank">
+          <i class="bi bi-github"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <form id="scoreForm">
+        <input type="text" id="pseudo" placeholder="Username" name="pseudo">
+        <input type="password" id="mdp" name="mdp" placeholder="Password">
+        <i class="bi bi-info-circle tooltip-container" data-tooltip="Enter a password to protect your score. Don't forget it, with your username & password you can update your score !"></i>
+        <button type="submit" class="tooltip-container" data-tooltip="Save your best score" ><i class="bi bi-floppy2-fill"></i></button>
+      </form> 
+      <div class="infos">
+        <span class='score tooltip-container' data-tooltip="Score /900 (30x30)">0</span>
+        <span id='try' class='tooltip-container' data-tooltip="Number of try">0</span>
+        <span id='best' class='tooltip-container' data-tooltip="Your best try">0</span>
+      </div>
+    </div>
+  </section>
+
+  <div class='grid'></div>
+
+  <div class="score-list element"s>
+    <p class="total"><span id="list-total"></span> Players</p>
+    <ul id="scoresList"></ul>
+  </div>
+  <footer>
+    <p>© <a href="https://github.com/KaazDW/" target="_blank">KaazDW</a> 2024</p>
+  </footer>
+</body>
+</html>
