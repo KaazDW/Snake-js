@@ -80,9 +80,9 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/kaazdw/Snake.js
+[contributors-shield]: https://img.shields.io/github/contributors/kaazdw/Snake.js.svg?style=for-the-badge
+[contributors-url]: https://github.com/kaazdw/Snake.js/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/kaazdw/Snake.js.svg?style=for-the-badge
+[forks-url]: https://github.com/kaazdw/Snake.js/network/members
+[stars-shield]: https://img.shields.io/github/stars/kaazdw/Snake.js?style=for-the-badge
 [stars-url]: https://github.com/othneildrew/kaazdw/Snake.js
