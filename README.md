@@ -25,17 +25,13 @@
 
 ## About The Project
 
-A vanilla JavaScript grid-based game made on the <a href="https://github.com/kubowania/Nokia3310-Snake">code of kubowania</a>
+A vanilla JavaScript grid-based game made on the code template of <a href="https://github.com/kubowania/Nokia3310-Snake">Kubowania</a>.<br/>
+This game is a remaster of the classic snake game played on a 30x30 grid (900 squares), featuring increased speed to enhance difficulty. <br/>
+I have also added a leaderboard to save and compare the highest scores achieved.
 
 <br/>
 
 <!-- ROADMAP -->
-
-## Roadmap
-
-- [ ] Graphic redesign
-- [ ] Gameplay improvement
-- [ ] Maybe multiple game-mode
 
 <br/>
 
