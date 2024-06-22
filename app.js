@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
         measurementId: "..."
     };
 
-    // Initialisez Firebase et Firestore
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
@@ -19,12 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const scoreDisplay = document.querySelector('.score');
     const tryDisplay = document.getElementById('try');
     const bestDisplay = document.getElementById('best');
-    const startStopBtn = document.querySelector('.start-stop'); 
+    const startStopBtn = document.querySelector('.start-stop');
     const scoreForm = document.getElementById('scoreForm');
-    const scoresList = document.getElementById('scoresList'); 
+    const scoresList = document.getElementById('scoresList');
 
     const width = 30;
-    let divquantity = 900;
+    const divquantity = 900;
     let currentIndex = 0;
     let appleIndex = 0;
     let currentSnake = [1, 0];
@@ -34,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let interval = 0;
     let tryNumber = 1;
     let bestScore = 0;
-    let keyPressed = false; 
+    let keyPressed = false;
     let gameRunning = false;
 
     for (let i = 0; i < divquantity; i++) {
@@ -47,11 +46,16 @@ document.addEventListener('DOMContentLoaded', () => {
     function stopGame() {
         clearInterval(interval);
         gameRunning = false;
-        startStopBtn.innerHTML = '<i class="bi bi-play-circle-fill tooltip-container" data-tooltip="Start the game"></i>';
+        startStopBtn.innerHTML = 'Start the game';
     }
 
     function startGame() {
-        currentSnake.forEach(index => squares[index].classList.remove('snake'));
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+
+        currentSnake.forEach(index => squares[index].classList.remove('snake', 'head', 'body'));
         squares[appleIndex].classList.remove('apple');
         clearInterval(interval);
         score = 2;
@@ -62,34 +66,37 @@ document.addEventListener('DOMContentLoaded', () => {
         intervalTime = 100;
         currentSnake = [1, 0];
         currentIndex = 0;
-        keyPressed = false; // Réinitialiser le drapeau
-        currentSnake.forEach(index => squares[index].classList.add('snake'));
+        keyPressed = false;
+        currentSnake.forEach(index => squares[index].classList.add('snake', 'body'));
+        squares[currentSnake[0]].classList.add('head');
         interval = setInterval(moveOutcomes, intervalTime);
         gameRunning = true;
-        startStopBtn.innerHTML = '<i class="bi bi-stop-circle-fill tooltip-container" data-tooltip="Stop the game"></i>';
+        startStopBtn.innerHTML = 'Stop the game';
     }
 
     function moveOutcomes() {
         if (
             (currentSnake[0] + width >= squares.length && direction === width) ||
-            (currentSnake[0] % width === width - 1 && direction === 1) || 
+            (currentSnake[0] % width === width - 1 && direction === 1) ||
             (currentSnake[0] % width === 0 && direction === -1) ||
             (currentSnake[0] - width < 0 && direction === -width) ||
             squares[currentSnake[0] + direction].classList.contains('snake')
         ) {
             tryNumber++;
-            if (score > bestScore) bestScore = score;
-            bestDisplay.innerText = bestScore;
+            if (score > bestScore) {
+                bestScore = score;
+                bestDisplay.innerText = bestScore;
+            }
             return startGame();
         }
 
         const tail = currentSnake.pop();
-        squares[tail].classList.remove('snake'); 
+        squares[tail].classList.remove('snake', 'body');
         currentSnake.unshift(currentSnake[0] + direction);
 
         if (squares[currentSnake[0]].classList.contains('apple')) {
             squares[currentSnake[0]].classList.remove('apple');
-            squares[tail].classList.add('snake');
+            squares[tail].classList.add('snake', 'body');
             currentSnake.push(tail);
             randomApple();
             score++;
@@ -100,44 +107,66 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (squares[currentSnake[0]].classList.contains('snake')) {
             tryNumber++;
-            if (score > bestScore) bestScore = score;
-            bestDisplay.innerText = bestScore;
+            if (score > bestScore) {
+                bestScore = score;
+                bestDisplay.innerText = bestScore;
+            }
             return startGame();
         }
 
-        squares[currentSnake[0]].classList.add('snake');
-        keyPressed = false; 
+        squares[currentSnake[0]].classList.add('snake', 'head');
+        squares[currentSnake[1]].classList.add('snake', 'body');
+        keyPressed = false;
     }
 
     function randomApple() {
         do {
             appleIndex = Math.floor(Math.random() * squares.length);
-        } while (squares[appleIndex].classList.contains('snake')); 
+        } while (squares[appleIndex].classList.contains('snake'));
         squares[appleIndex].classList.add('apple');
     }
 
     function control(e) {
-        if (keyPressed) return; 
+        if (keyPressed) return;
         keyPressed = true;
 
-        squares[currentIndex].classList.remove('snake');
+        squares[currentIndex].classList.remove('snake', 'head', 'body');
 
         if (e.key === 'ArrowRight' && direction !== -1) {
-            direction = 1; 
+            direction = 1;
         } else if (e.key === 'ArrowUp' && direction !== width) {
             direction = -width;
         } else if (e.key === 'ArrowLeft' && direction !== 1) {
-            direction = -1; 
+            direction = -1;
         } else if (e.key === 'ArrowDown' && direction !== -width) {
-            direction = width; 
+            direction = width;
         }
 
         e.preventDefault();
     }
 
-    window.addEventListener('keydown', (e) => {
-        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { // Utiliser ' ' pour la barre d'espace
             e.preventDefault();
+            if (gameRunning) {
+                stopGame();
+            } else {
+                startGame();
+            }
+        } else if (e.key === 'Escape') {
+            e.preventDefault();
+            if (gameRunning) {
+                stopGame();
+            }
+        } else if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+            e.preventDefault();
+        }
+    });
+
+    scoreForm.addEventListener('click', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON') {
+            stopGame();
+            e.target.focus();
         }
     });
 
@@ -149,24 +178,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const date = new Date().toLocaleDateString();
 
         if (pseudo === "" || mdp === "") {
-            iziToast.error({
-                title: 'Error',
-                message: 'To save your score, please enter a username and a password.',
-                position: 'bottomRight',
-                timeout: 5000,
-                width: '300px' 
-            });
+            showToastError('Error', 'To save your score, please enter a username and a password.');
             return;
         }
 
         if (newScore < 2) {
-            iziToast.error({
-                title: 'Error',
-                message: 'Achieve a score to save it.',
-                position: 'bottomRight',
-                timeout: 5000,
-                width: '300px' 
-            });
+            showToastError('Error', 'Achieve a score to save it.');
             return;
         }
 
@@ -183,37 +200,19 @@ document.addEventListener('DOMContentLoaded', () => {
                                 date: date
                             })
                             .then(() => {
-                                iziToast.success({
-                                    title: 'Success',
-                                    message: 'Previous score deleted, new score added successfully!',
-                                    position: 'bottomRight',
-                                    timeout: 5000,
-                                    width: '300px'
-                                });
+                                showToastSuccess('Success', 'Previous score deleted, new score added successfully!');
                                 scoreForm.reset();
-                                displayScores(); 
-                                startGame(); 
+                                displayScores();
+                                startGame();
                             })
                             .catch((error) => {
                                 console.error("Error occurred while adding the new score: ", error);
-                                iziToast.error({
-                                    title: 'Error',
-                                    message: 'Error encountered while adding the new score.',
-                                    position: 'bottomRight',
-                                    timeout: 5000,
-                                    width: '300px' 
-                                });
+                                showToastError('Error', 'Error encountered while adding the new score.');
                             });
                         })
                         .catch((error) => {
                             console.error("Error encountered while deleting the old score.", error);
-                            iziToast.error({
-                                title: 'Error',
-                                message: 'Error encountered while deleting the old score.',
-                                position: 'bottomRight',
-                                timeout: 5000,
-                                width: '300px'
-                            });
+                            showToastError('Error', 'Error encountered while deleting the old score.');
                         });
                 } else {
                     db.collection('scores').add({
@@ -223,90 +222,82 @@ document.addEventListener('DOMContentLoaded', () => {
                         date: date
                     })
                     .then(() => {
-                        iziToast.success({
-                            title: 'Success',
-                            message: 'New score added successfully!',
-                            position: 'bottomRight',
-                            timeout: 5000,
-                            width: '300px'
-                        });
+                        showToastSuccess('Success', 'New score added successfully!');
                         scoreForm.reset();
                         displayScores();
                     })
                     .catch((error) => {
                         console.error("Error adding new score : ", error);
-                        iziToast.error({
-                            title: 'Error',
-                            message: 'Error adding the new score.',
-                            position: 'bottomRight',
-                            timeout: 5000,
-                            width: '300px'
-                        });
+                        showToastError('Error', 'Error adding the new score.');
                     });
                 }
             })
             .catch((error) => {
                 console.error("Error while searching for existing documents in the DB.", error);
-                iziToast.error({
-                    title: 'Error',
-                    message: 'Error while searching for existing documents in the DB.',
-                    position: 'bottomRight',
-                    timeout: 5000,
-                    width: '300px'
-                });
+                showToastError('Error', 'Error while searching for existing documents in the DB.');
             });
     });
 
+    function showToastSuccess(title, message) {
+        iziToast.success({
+            title,
+            message,
+            position: 'bottomRight',
+            timeout: 5000,
+            width: '300px'
+        });
+    }
+
+    function showToastError(title, message) {
+        iziToast.error({
+            title,
+            message,
+            position: 'bottomRight',
+            timeout: 5000,
+            width: '300px'
+        });
+    }
+
     function displayScores() {
-        scoresList.innerHTML = ''; 
+        scoresList.innerHTML = '';
         let rankingNumber = 1;
 
         db.collection('scores').orderBy('score', 'desc').get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
-                    const scoreData = doc.data(); 
+                    const scoreData = doc.data();
                     const listItem = document.createElement('li');
-                    
+
                     const rankingSpan = document.createElement('span');
                     rankingSpan.textContent = rankingNumber;
-                    rankingSpan.className = 'ranking-number'; 
+                    rankingSpan.className = 'ranking-number';
 
-                    const pseudoSpan = document.createElement('span'); 
+                    const pseudoSpan = document.createElement('span');
                     pseudoSpan.textContent = scoreData.pseudo;
-                    pseudoSpan.className = 'pseudo'; 
+                    pseudoSpan.className = 'pseudo';
 
-                    const scoreSpan = document.createElement('span'); 
-                    scoreSpan.textContent = scoreData.score; 
-                    scoreSpan.className = 'score'; 
+                    const scoreSpan = document.createElement('span');
+                    scoreSpan.textContent = scoreData.score;
+                    scoreSpan.className = 'score';
 
                     listItem.appendChild(rankingSpan);
                     listItem.appendChild(pseudoSpan);
                     listItem.appendChild(scoreSpan);
 
                     scoresList.appendChild(listItem);
-                    rankingNumber++; 
+                    rankingNumber++;
                 });
 
                 const totalItemsElement = document.getElementById('list-total');
-                if (totalItemsElement) {
-                    totalItemsElement.textContent = querySnapshot.size;
-                }
+                totalItemsElement.textContent = querySnapshot.size;
             })
             .catch((error) => {
-                console.error("Error retrieving scores.", error);
-                iziToast.error({
-                    title: 'Error',
-                    message: 'Error retrieving scores.',
-                    position: 'bottomRight',
-                    timeout: 5000,
-                    width: '300px'
-                });
+                console.error("Error getting scores: ", error);
+                showToastError('Error', 'Error retrieving scores.');
             });
     }
 
     displayScores();
-
-    document.addEventListener('keydown', control);
 
     startStopBtn.addEventListener('click', () => {
         if (gameRunning) {
@@ -315,4 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
             startGame();
         }
     });
+
+    document.addEventListener('keydown', control);
+
 });
