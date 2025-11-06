@@ -20,7 +20,9 @@
     <a href="https://snaake.vercel.app/" target="_blank">Play game</a>
   </p>
 </div>
-
+<p align="center" >
+  <img style="border: 0; box-shadow: none;" src="https://raw.githubusercontent.com/KaazDW/Snake-js/main/screen.png" alt="Snake.js Game Screenshot" />
+</p>
 <!-- ABOUT THE PROJECT -->
 
 ## About The Project
